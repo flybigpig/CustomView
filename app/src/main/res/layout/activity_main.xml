@@ -7,10 +7,9 @@
     android:orientation="vertical"
     tools:context=".activity.MainActivity">
 
-    <com.lessons.change.customview.advanceview.RainWidget
-        android:id="@+id/rainwidget"
+    <com.lessons.change.customview.view.SurfacesView
+        android:id="@+id/surfaceView"
         android:layout_width="match_parent"
-        android:background="@color/black"
         android:layout_height="match_parent" />
 
 

@@ -1,23 +1,19 @@
 package com.lessons.change.customview.activity;
 
 import android.content.pm.PackageManager;
-import android.os.Binder;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.lessons.change.customview.R;
 import com.lessons.change.customview.advanceview.RainWidget;
+import com.lessons.change.customview.view.GravityView;
 import com.lessons.change.customview.view.RegionView;
+import com.lessons.change.customview.view.SurfacesView;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * 自定义view 实战
@@ -33,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView ava;
     private TextView total;
     private RainWidget rainwedget;
+    private GravityView mGravityView;
+    private Timer mTimer1;
+    private TimerTask mTimerTask1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,62 +43,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
 
+        SurfacesView surfacesView = findViewById(R.id.surfaceView);
 
-        rainwedget = findViewById(R.id.rainwidget);
 
     }
 
 
-    private void sendRequestWithHttpURLConnection() {
-        // 开启线程来发起网络请求
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                HttpURLConnection connection = null;
-                BufferedReader reader = null;
-                try {
-                    URL url = new URL("https://www.baidu.com");
-                    connection = (HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod("GET");
-                    connection.setConnectTimeout(8000);
-                    connection.setReadTimeout(8000);
-                    InputStream in = connection.getInputStream();
-                    // 下面对获取到的输入流进行读取
-                    reader = new BufferedReader(new InputStreamReader(in));
-                    StringBuilder response = new StringBuilder();
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        response.append(line);
-                    }
-                    showResponse(response.toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    if (reader != null) {
-                        try {
-                            reader.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    if (connection != null) {
-                        connection.disconnect();
-                    }
-                }
-            }
-        }).start();
-    }
-
-    private void showResponse(final String response) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Log.d("responsssssssssss", response);
-            }
-        });
-    }
-
-    private void StudyActivityStart(){
-
-    }
 }
