@@ -72,9 +72,8 @@ public class SurfacesView extends SurfaceView implements SurfaceHolder.Callback,
                 Log.d("canvas", "surface");
                 surfaceHolder.unlockCanvasAndPost(mCanvas);
             }
-            x += 2;
             y += 2;
-
+            y = y % getHeight();
             /** 取得更新游戏结束的时间 **/
             long endTime = System.currentTimeMillis();
 

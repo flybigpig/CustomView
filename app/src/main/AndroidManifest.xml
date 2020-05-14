@@ -5,15 +5,9 @@
 
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-
-
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <uses-permission android:name="android.permission.DEVICE_POWER" />
-
     <uses-permission android:name="android.permission.INTERNET" />
-
 
     <application
         android:name=".memory.Applications"
@@ -23,6 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.RxJavaActivity"></activity>
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,8 +31,6 @@
                 <action android:name="com.example.normal.receiver" />
             </intent-filter>
         </receiver>
-
-
     </application>
 
 </manifest>
