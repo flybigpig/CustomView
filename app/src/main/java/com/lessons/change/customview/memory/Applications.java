@@ -130,28 +130,29 @@ public class Applications extends Application {
         screenStatusIF.addAction(Intent.ACTION_SCREEN_OFF);
         registerReceiver(mScreenStatusReceiver, screenStatusIF);
     }
+    class ScreenStatusReceiver extends BroadcastReceiver {
+
+        final String SCREEN_ON = "android.intent.action.SCREEN_ON";
+        final String SCREEN_OFF = "android.intent.action.SCREEN_OFF";
 
 
-}
+        @Override
+        public void onReceive(Context context, Intent intent) {
 
-class ScreenStatusReceiver extends BroadcastReceiver {
+            if (SCREEN_ON.equals(intent.getAction())) {
+                Applications.isLight = true;
 
-    final String SCREEN_ON = "android.intent.action.SCREEN_ON";
-    final String SCREEN_OFF = "android.intent.action.SCREEN_OFF";
+            } else {
+                Applications.isLight = false;
+            }
+            Log.d("light", String.valueOf(Applications.isLight));
 
-
-    @Override
-    public void onReceive(Context context, Intent intent) {
-
-        if (SCREEN_ON.equals(intent.getAction())) {
-            Applications.isLight = true;
-
-        } else {
-            Applications.isLight = false;
         }
-        Log.d("light", String.valueOf(Applications.isLight));
-
     }
+
+
 }
+
+
 
 
