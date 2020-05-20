@@ -7,10 +7,9 @@
     android:orientation="vertical"
     tools:context=".activity.MainActivity">
 
-    <com.lessons.change.customview.view.SurfacesView
-        android:id="@+id/surfaceView"
+    <com.lessons.change.customview.view.ChartView
+        android:id="@+id/chartview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 
 </LinearLayout>
