@@ -43,7 +43,7 @@ public class MeterView extends View implements Runnable {
     private float mCenterX;
     private float mCenterY;
     private List<Integer> texts = new ArrayList<>();
-    private static Integer speed = 1;
+    private static Integer speed = 0;
     private int mWidth;
     private int mHeight;
 
@@ -66,7 +66,7 @@ public class MeterView extends View implements Runnable {
         mPaint.setStrokeWidth(UiUtils.dpToPixel(5));
         texts.add(0);
         texts.add(5);
-        texts.add(15);
+        texts.add(10);
         texts.add(20);
         texts.add(50);
         texts.add(100);
@@ -74,8 +74,9 @@ public class MeterView extends View implements Runnable {
 
     }
 
-    public void setSpeed(Integer random) {
-        this.speed = random;
+    public void setSpeed(Integer speed) {
+        this.speed = speed;
+//        invalidate();
     }
 
     @Override
@@ -95,11 +96,12 @@ public class MeterView extends View implements Runnable {
                 // 由于不是半圆，要多画10度，需要算出这10度的y的高度(高度/(1+sin10))
                 mCircleRadius = (float) ((minLength / (1 + Math.sin(CONNER * Math.PI / 180))));
             }
+
             mCenterX = mStartX + mCircleRadius;
             mCenterY = mStartY + mCircleRadius;
             postInvalidate();
         }
-//        new Thread(this).start();
+        new Thread(this).start();
     }
 
     @Override
@@ -112,24 +114,8 @@ public class MeterView extends View implements Runnable {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
         drawDashArc(canvas);
-
-        drawSpeed(canvas);
-    }
-
-    private void drawSpeed(Canvas canvas) {
-        Paint paint = new Paint();
-        paint.setColor(Color.parseColor("#16A4F6"));
-        paint.setTextSize(mCircleRadius / 2);
-
-        if (speed >= 0 && speed < 10) {
-            canvas.drawText(String.valueOf(speed), mCenterX - 50, mCenterY, paint);
-        } else if (speed < 100 && speed >= 10) {
-            canvas.drawText(String.valueOf(speed), mCenterX - 120, mCenterY, paint);
-        } else if (speed > 100) {
-            canvas.drawText(String.valueOf(speed), mCenterX - 180, mCenterY, paint);
-        }
+        drawText(canvas);
     }
 
 
@@ -176,7 +162,7 @@ public class MeterView extends View implements Runnable {
             canvas.drawArc(rectFs, 180 - CONNER, (180 + CONNER * 2) / 6 * flag + angle, false, mPaint);
         }
 
-        Bitmap bitmapss = BitmapUtils.drawableToBitmap(mContext.getResources().getDrawable(R.mipmap.ic_launcher));
+        Bitmap bitmapss = BitmapUtils.drawableToBitmap(mContext.getResources().getDrawable(R.drawable.icon_progre));
         int width = bitmapss.getWidth();
         int height = bitmapss.getHeight();
         float scaleWidth = (float) (mWidth) / width;
@@ -186,13 +172,28 @@ public class MeterView extends View implements Runnable {
         canvas.drawBitmap(bitmaps, 0, 0, mPaint);
     }
 
+    private void drawText(Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setColor(Color.parseColor("#16A4F6"));
+        paint.setTextSize(mCircleRadius / 2);
+
+        if (speed >= 0 && speed < 10) {
+            canvas.drawText(String.valueOf(speed), mCenterX - mCircleRadius / 6, mCenterY, paint);
+        } else if (speed < 100 && speed >= 10) {
+            canvas.drawText(String.valueOf(speed), mCenterX - mCircleRadius / 4, mCenterY, paint);
+        } else if (speed > 100) {
+            canvas.drawText(String.valueOf(speed), mCenterX - mCircleRadius / 3, mCenterY, paint);
+        }
+    }
+
+
     private void initScale(Canvas canvas) {
         mPaint = new Paint();
 
         float connreStart = 2 * CONNER - 180;
         canvas.rotate(connreStart, mCenterX, mCenterY);
         for (int i = 0; i < 7; i++) {
-            mPaint.setTextSize(50);
+            mPaint.setTextSize(30);
             mPaint.setColor(mContext.getResources().getColor(R.color.black));
 //            canvas.drawLine(mCenterX, mStartY, mCenterX, mStartY + UiUtils.dpToPixel(10), mPaint);
             canvas.drawText(texts.get(i).toString(), mCenterX - texts.get(i).toString().length() * 15, mStartY - 10, mPaint);
@@ -206,13 +207,10 @@ public class MeterView extends View implements Runnable {
             this.setSpeed(new Random().nextInt(200));
             postInvalidate();
             try {
-                Thread.sleep(200);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
         }
     }
-
-
 }

@@ -1,6 +1,8 @@
 package com.lessons.change.customview.activity;
 
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,7 +26,11 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         ChartLineView chartView = findViewById(R.id.chartview);
 
-
+        String data[] = {"aa", "bb", "cc", "dd", "aa", "bb", "cc", "dd", "aa", "bb", "cc", "dd", "aa", "bb", "cc", "dd"};//假数据
+        ListView listView = (ListView) findViewById(R.id.listview);//在视图中找到ListView
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);//新建并配置ArrayAapeter
+        listView.setAdapter(adapter);
     }
+
 
 }

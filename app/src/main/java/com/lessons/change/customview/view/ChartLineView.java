@@ -55,17 +55,17 @@ public class ChartLineView extends View {
         point.x = width;
         point.y = height;
 
-        yPoint = point.y / 2;
+        yPoint = point.y / 3;
         XLength = point.x - 100;        //X轴的长度
-        YLength = point.y / 2 - 100;
+        YLength = point.y / 3 - 100;
 
-        float[] s1 = new float[]{6, 56, 39, 100, 200, 100, 200};
+        float[] s1 = new float[]{6, 56, 39, 100, 200};
         float[] s2 = new float[]{26, 156, 139, 50};
 
         datas.add(s1);
         datas.add(s2);
         SetInfo(new String[]{"7-11", "7-12", "7-13", "7-14", "7-15", "7-16", "7-17"}, // X轴刻度
-                new float[]{0, 50, 100, 150, 200, 250}, // Y轴刻度
+                new float[]{0, 50, 100, 150, 200, 250, 300, 350}, // Y轴刻度
                 datas);
     }
 
@@ -76,6 +76,16 @@ public class ChartLineView extends View {
 
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        Resources resources = this.getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        float density = dm.density;
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        setMeasuredDimension(width, height / 3 + 100);
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -93,21 +103,21 @@ public class ChartLineView extends View {
         paint1.setColor(Color.BLACK);
         paint.setTextSize(12);  //设置轴文字大小
 
-        canvas.drawLine(xPoint, 100, xPoint, point.y / 2, paint);
-        canvas.drawLine(xPoint, point.y / 2, xPoint + point.x - 100, point.y / 2, paint);
+        canvas.drawLine(xPoint, 50, xPoint, point.y / 3, paint);
+        canvas.drawLine(xPoint, point.y / 3, xPoint + point.x - 100, point.y / 3, paint);
 
 
-        canvas.drawLine(xPoint, 100, xPoint - 10, 100 + 10, paint);  //箭头
-        canvas.drawLine(xPoint, 100, xPoint + 10, 100 + 10, paint);
+        canvas.drawLine(xPoint, 50, xPoint - 10, 60, paint);  //箭头
+        canvas.drawLine(xPoint, 50, xPoint + 10, 60, paint);
 
-        canvas.drawLine(xPoint + point.x - 100, point.y / 2, xPoint + point.x - 100 - 10, point.y / 2 - 10, paint);  //箭头
-        canvas.drawLine(xPoint + point.x - 100, point.y / 2, xPoint + point.x - 100 - 10, point.y / 2 + 10, paint);
+        canvas.drawLine(xPoint + point.x - 100, point.y / 3, xPoint + point.x - 100 - 10, point.y / 3 - 10, paint);  //箭头
+        canvas.drawLine(xPoint + point.x - 100, point.y / 3, xPoint + point.x - 100 - 10, point.y / 3 + 10, paint);
 
         //lines
         for (int i = 0; i * YScale < YLength && i < lines.length; i++) {
             paint.setTextSize(25);
             paint.setStrokeWidth(1);
-            canvas.drawText(String.valueOf(lines[i]), xPoint - 70, point.y / 2 - i * YScale, paint);
+            canvas.drawText(String.valueOf(lines[i]), xPoint - 70, point.y / 3 - i * YScale, paint);
         }
 
 
@@ -115,7 +125,7 @@ public class ChartLineView extends View {
             paint.setTextSize(25);
             paint.setStrokeWidth(1);
 //            canvas.drawText(rows[i], xPoint + i * XScale, point.y / 2 + 30, paint);
-            drawText(canvas, rows[i], xPoint + i * XScale, point.y / 2 + 50, paint, -45);
+            drawText(canvas, rows[i], xPoint + i * XScale, point.y / 3 + 50, paint, -45);
         }
 
         paint.setStrokeWidth(3);
