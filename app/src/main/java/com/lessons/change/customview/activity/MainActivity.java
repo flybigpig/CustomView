@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.lessons.change.customview.R;
-import com.lessons.change.customview.view.ChartView;
+import com.lessons.change.customview.view.ChartLineView;
 
 /**
  * 自定义view 实战
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        ChartView chartView = findViewById(R.id.chartview);
+        ChartLineView chartView = findViewById(R.id.chartview);
 
 
     }

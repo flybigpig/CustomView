@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".activity.MainActivity">
 
-    <com.lessons.change.customview.view.ChartView
+    <com.lessons.change.customview.view.ChartLineView
         android:id="@+id/chartview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

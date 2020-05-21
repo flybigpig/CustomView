@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChartView extends View {
+public class ChartLineView extends View {
 
     private Context mContext;
     public Point point = new Point();
@@ -32,14 +32,14 @@ public class ChartView extends View {
     private List<float[]> datas = new ArrayList<>();
 
 
-    public ChartView(Context context) {
+    public ChartLineView(Context context) {
         super(context);
         this.mContext = context;
         init();
     }
 
 
-    public ChartView(Context context, @Nullable AttributeSet attrs) {
+    public ChartLineView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.mContext = context;
         init();
@@ -59,7 +59,7 @@ public class ChartView extends View {
         XLength = point.x - 100;        //X轴的长度
         YLength = point.y / 2 - 100;
 
-        float[] s1 = new float[]{6, 56, 39, 100};
+        float[] s1 = new float[]{6, 56, 39, 100, 200, 100, 200};
         float[] s2 = new float[]{26, 156, 139, 50};
 
         datas.add(s1);
@@ -114,14 +114,15 @@ public class ChartView extends View {
         for (int i = 0; i * XScale < XLength && i < rows.length; i++) {
             paint.setTextSize(25);
             paint.setStrokeWidth(1);
-            canvas.drawText(rows[i], xPoint + i * XScale, point.y / 2 + 30, paint);
+//            canvas.drawText(rows[i], xPoint + i * XScale, point.y / 2 + 30, paint);
+            drawText(canvas, rows[i], xPoint + i * XScale, point.y / 2 + 50, paint, -45);
         }
 
         paint.setStrokeWidth(3);
         for (int l = 0; l < datas.size(); l++) {
             for (int d = 0; d < datas.get(l).length; d++) {
                 float[] data = datas.get(l);
-                for (int i = 0; i < data.length - 1; i++) {
+                for (int i = 0; i < data.length - 1; i++) {  // *需要判断是否数据超过显示*
                     float lstage = (data[i] / 50);
                     float ldalteY = data[i] % 50;
                     float estage = (data[i + 1] / 50);
