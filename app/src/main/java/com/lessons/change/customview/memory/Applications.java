@@ -51,6 +51,8 @@ public class Applications extends Application {
                     Log.d("ava memory", String.valueOf(msg.obj));
                     break;
             }
+
+
         }
     };
     private TimerTask mTimerTask1;
@@ -60,6 +62,8 @@ public class Applications extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        initFlurry();
 
     }
 
@@ -88,39 +92,6 @@ public class Applications extends Application {
 
     }
 
-    @Override
-    public void onTrimMemory(int level) {
-        super.onTrimMemory(level);
-        switch (level) {
-            case TRIM_MEMORY_COMPLETE://应用程序不可见-内存低-位于LRU底部-80-应用程序可能会被杀死
-                Log.d("TRIM_MEMORY_COMPLETE", TRIM_MEMORY_COMPLETE + "");
-                break;
-            case TRIM_MEMORY_MODERATE://应用程序不可见-内存低-位于LRU中部-60-设备当前的运行环境内存较少
-                Log.d("TRIM_MEMORY_MODERATE", TRIM_MEMORY_MODERATE + "");
-                break;
-            case TRIM_MEMORY_BACKGROUND://应用程序不可见-内存低-位于LRU顶部，但是位置在下降-40--设备当前的运行环境内存较少
-                Log.d("TRIM_MEMORY_BACKGROUND", TRIM_MEMORY_BACKGROUND + "");
-                break;
-
-            case TRIM_MEMORY_UI_HIDDEN://应用程序不可见-20-程序处于后台应当释放一些内存
-                Log.d("TRIM_MEMORY_UI_HIDDEN", TRIM_MEMORY_UI_HIDDEN + "");
-                break;
-            case TRIM_MEMORY_RUNNING_CRITICAL://应用程序可见-15-内存紧张-位于LRU顶部-其他进程可能会销毁以获得更多可用内存
-                Log.d("TRIM_RUNNING_CRITICAL", TRIM_MEMORY_RUNNING_CRITICAL + "");
-                break;
-            case TRIM_MEMORY_RUNNING_LOW: //应用程序可见-内存低-10-位于LRU顶部-设备的可用内存越来越少
-                Log.d("TRIM_MEMORY_RUNNING_LOW", TRIM_MEMORY_RUNNING_LOW + "");
-                break;
-            case TRIM_MEMORY_RUNNING_MODERATE://应用程序可见-内存较少-5-位于LRU顶部系统即将进入低内存状态
-                Log.d("TRIM_RUNNING_MODERATE", TRIM_MEMORY_RUNNING_MODERATE + "");
-                break;
-        }
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-    }
 
     private void registSreenStatusReceiver() {
 
@@ -130,6 +101,7 @@ public class Applications extends Application {
         screenStatusIF.addAction(Intent.ACTION_SCREEN_OFF);
         registerReceiver(mScreenStatusReceiver, screenStatusIF);
     }
+
     class ScreenStatusReceiver extends BroadcastReceiver {
 
         final String SCREEN_ON = "android.intent.action.SCREEN_ON";
@@ -149,8 +121,6 @@ public class Applications extends Application {
 
         }
     }
-
-
 }
 
 

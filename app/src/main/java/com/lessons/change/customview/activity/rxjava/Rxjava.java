@@ -16,9 +16,5 @@ import io.reactivex.rxjava3.core.Flowable;
  */
 public class Rxjava {
 
-    public static void main(String[] args) {
 
-
-
-    }
 }

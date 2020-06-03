@@ -22,7 +22,7 @@ public class ChartLineView extends View {
     private int xPoint = 80;
     private int yPoint = 0;
 
-    public int XScale = 150;     //X的刻度长度
+    public int XScale = 60;     //X的刻度长度
     public int YScale = 120;
     private int XLength;
     private int YLength;
@@ -64,7 +64,7 @@ public class ChartLineView extends View {
 
         datas.add(s1);
         datas.add(s2);
-        SetInfo(new String[]{"7-11", "7-12", "7-13", "7-14", "7-15", "7-16", "7-17"}, // X轴刻度
+        SetInfo(new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"}, // X轴刻度
                 new float[]{0, 50, 100, 150, 200, 250, 300, 350}, // Y轴刻度
                 datas);
     }
