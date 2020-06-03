@@ -33,12 +33,12 @@ public class CustonCircle extends View {
 
     private void init() {
         paint = new Paint();
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(2);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setStrokeWidth(5);
         lx = 0;
         ty = 0;
-        rx = 115;
-        by = 500;
+        rx = 120;
+        by = 510;
     }
 
     @Override
