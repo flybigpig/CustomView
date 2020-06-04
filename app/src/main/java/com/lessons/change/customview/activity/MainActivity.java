@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.lessons.change.customview.R;
+import com.lessons.change.customview.view.ChartLineView;
 import com.lessons.change.customview.view.CustonCircle;
 
 /**
@@ -23,9 +24,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
 
-        CustonCircle custonCircle = findViewById(R.id.circle);
 
-//        ChartLineView chartView = findViewById(R.id.chartview);
+        ChartLineView chartView = findViewById(R.id.chartview);
 //
 //        String data[] = {"aa", "bb", "cc", "dd", "aa", "bb", "cc", "dd", "aa", "bb", "cc", "dd", "aa", "bb", "cc", "dd"};//假数据
 //        ListView listView = (ListView) findViewById(R.id.listview);//在视图中找到ListView
