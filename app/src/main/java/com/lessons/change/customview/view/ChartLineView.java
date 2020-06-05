@@ -6,7 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.RectF;
+import android.net.wifi.ScanResult;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -14,10 +14,13 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.lessons.change.customview.R;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-public class ChartLineView extends View {
+public class ChartLineView extends View implements Runnable {
 
     private Context mContext;
     public Point point = new Point();
@@ -30,8 +33,14 @@ public class ChartLineView extends View {
     private int YLength;
     private float[] lines;
     private String[] rows;
-    private List<Integer> datas = new ArrayList<>();
+    private List<ScanResult> datas = new ArrayList<>();
+    private int[] colors = new int[]{
+            R.color.red, R.color.aquamarine, R.color.yellow, R.color.saddlebrown, R.color.violet_value, R.color.salmon,
+            R.color.black, R.color.beige, R.color.green, R.color.greenyellow, R.color.violet, R.color.antiquewhite, R.color.thistle,
+            R.color.teal, R.color.palegoldenrod, R.color.powderblue, R.color.darkorchid
+    };
 
+    List<Paint> mPaints = new ArrayList<>();
 
     public ChartLineView(Context context) {
         super(context);
@@ -58,22 +67,38 @@ public class ChartLineView extends View {
 
         yPoint = point.y / 3;
         XLength = point.x - 100;        //X轴的长度
-        YLength = point.y;
+        YLength = point.y / 3;
 
-        float[] s2 = new float[]{};
 
-        datas.add(50);
-        datas.add(60);
-        datas.add(20);
-        datas.add(35);
-        this.rows = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"};
+        this.rows = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"};
         this.lines = new float[]{-100, -80, -60, -40, -20, 0};
+
+        XScale = (XLength - 200) / rows.length;
+        YScale = (YLength - 100) / lines.length;
+
+        initPaints();
+
+
     }
 
-    public void SetInfo(List<Integer> data) {
-        this.datas = data;
-        invalidate();
+    private void initPaints() {
+        int max = colors.length;
+        Paint paint;
+        for (int i = 0; i < max; i++) {
+            paint = new Paint();
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(5);
+            paint.setAlpha(30);
+            paint.setAntiAlias(true);
+            int color = new Random().nextInt(colors.length);
+            paint.setColor(mContext.getResources().getColor(colors[color]));
+            mPaints.add(paint);
+        }
+    }
 
+    public void SetInfo(List<ScanResult> data) {
+        this.datas.clear();
+        this.datas = data;
     }
 
     @Override
@@ -131,19 +156,45 @@ public class ChartLineView extends View {
 
         paint.setStrokeWidth(3);
 
-
+        ScanResult scanResult = null;
         for (int l = 0; l < datas.size(); l++) {
+            scanResult = datas.get(l);
+            int y = (100 - Math.abs(scanResult.level)) / 20;
+            float y11 = (100 - Math.abs(scanResult.level)) % 20;
+            int xposition = getChannelByFrequency(scanResult.frequency) - 1;
 
-            float y = (100 - datas.get(l)) / 20;
-            float y11 = (100 - datas.get(l)) % 20;
+            // 原定曲线
+//            RectF rectf = new RectF(xPoint + xposition * XScale + 100 - XScale,
+//                    point.y / 3 - (y * YScale + (y11 / 20 * YScale)),
+//                    xPoint + xposition * XScale + 100 + XScale,
+//                    point.y / 3 + (y * YScale + (y11 / 20 * YScale)));
+//            int color = new Random().nextInt(colors.length);
+//            Log.d("xposition color", color + " " + colors[color]);
+//
+//            int paintNum = new Random().nextInt(mPaints.size());
+//            canvas.drawArc(rectf, 180, 180, false, mPaints.get(paintNum));
+//            Log.d("xposition", "name " + scanResult.SSID + " channal   " + getChannelByFrequency(scanResult.frequency) + " level " + (scanResult.level + 100));
+//
+//            Log.d("xposition  xxxxxyyyyy", y + "  " + y11);
 
-            Log.d("yyyyyyyy", y + "  " + y11 + "  " + (point.y / 3 - (y * YScale + y11)));
+            // 改为梯形
+            int paintNum = new Random().nextInt(mPaints.size());
+            float x1 = xPoint + xposition * XScale + 100;
+            float y1 = point.y / 3 - (y * YScale + (y11 / 20 * YScale));
 
-            RectF rectf = new RectF(xPoint + l * 2 * XScale + 100 - XScale,
-                    point.y / 3 - (y * YScale + (y11 / 20 * YScale)),
-                    xPoint + l * 2 * XScale + 100 + XScale,
-                    point.y / 3 + (y * YScale + (y11 / 20 * YScale)));
-            canvas.drawArc(rectf, 180, 180, false, paint);
+            float x2 = xPoint + xposition * XScale + 100 + XScale;
+            float y2 = point.y / 3;
+
+
+            canvas.drawLine(x1, y1, x2, y1, mPaints.get(paintNum));
+            canvas.drawLine(x1, y1, x1 - XScale, y2, mPaints.get(paintNum));
+            canvas.drawLine(x2, y1, x2 + XScale, y2, mPaints.get(paintNum));
+
+            Paint paint2 = new Paint();
+            paint2.setStrokeWidth(2);
+            paint2.setStyle(Paint.Style.FILL);
+            canvas.drawText(scanResult.SSID, xPoint + xposition * XScale + 100 + XScale / 2,
+                    point.y / 3 - (y * YScale + (y11 / 20 * YScale)), paint2);
 
         }
 
@@ -158,6 +209,87 @@ public class ChartLineView extends View {
         canvas.drawText(text, x, y, paint);
         if (angle != 0) {
             canvas.rotate(-angle, x, y);
+        }
+    }
+
+    /**
+     * getChannal
+     *
+     * @param frequency
+     * @return
+     */
+    public static int getChannelByFrequency(int frequency) {
+        int channel = -1;
+        switch (frequency) {
+            case 2412:
+                channel = 1;
+                break;
+            case 2417:
+                channel = 2;
+                break;
+            case 2422:
+                channel = 3;
+                break;
+            case 2427:
+                channel = 4;
+                break;
+            case 2432:
+                channel = 5;
+                break;
+            case 2437:
+                channel = 6;
+                break;
+            case 2442:
+                channel = 7;
+                break;
+            case 2447:
+                channel = 8;
+                break;
+            case 2452:
+                channel = 9;
+                break;
+            case 2457:
+                channel = 10;
+                break;
+            case 2462:
+                channel = 11;
+                break;
+            case 2467:
+                channel = 12;
+                break;
+            case 2472:
+                channel = 13;
+                break;
+            case 2484:
+                channel = 14;
+                break;
+            case 5745:
+                channel = 149;
+                break;
+            case 5765:
+                channel = 153;
+                break;
+            case 5785:
+                channel = 157;
+                break;
+            case 5805:
+                channel = 161;
+                break;
+            case 5825:
+                channel = 165;
+                break;
+        }
+        return channel;
+    }
+
+    @Override
+    public void run() {
+        boolean draw = false;
+        while (true) {
+            if (datas.size() > 0 && !draw) {
+                invalidate();
+                draw = true;
+            }
         }
     }
 }
